@@ -19,6 +19,7 @@ scalar DateTime
 type Game {
   _id: ID!
   createdAt: DateTime!
+  guesses: [Guess!]!
   latitude: Float!
   longitude: Float!
   maxTimer: Float!
@@ -36,26 +37,46 @@ type GameStartedNotification {
 type Guess {
   _id: ID!
   createdAt: DateTime!
+  game: Game!
   latitude: Float!
   longitude: Float!
   playerName: String!
   updatedAt: DateTime!
 }
 
+"""Game started notification"""
+type GuessMadeNotification {
+  gameId: ObjectId!
+  playerName: String!
+}
+
+"""New Guess Input"""
+input MakeGuessInput {
+  gameId: ObjectId!
+  latitude: Float!
+  longitude: Float!
+  playerName: String!
+}
+
 type Mutation {
   addGame(data: AddGameInput!): Game!
+  makeGuess(data: MakeGuessInput!): Guess!
   startGame(id: String!): Game
 }
+
+"""Mongo object id scalar type"""
+scalar ObjectId
 
 type Query {
   game(id: String!): Game
   games: [Game!]!
-  guesses: [Guess]!
+  guesses(gameId: String!): [Guess]!
   hello: String!
   sample: String!
 }
 
 type Subscription {
   gameStartedSubscription: GameStartedNotification!
+  guessMadeSubscription: GuessMadeNotification!
   subscription: String!
 }

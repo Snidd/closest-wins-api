@@ -5,7 +5,7 @@ import { OneToMany } from "typeorm";
 @ObjectType("Game", { description: "Game Schema" })
 export default class GameSchema {
   @Field(() => ID)
-  _id: String;
+  _id: string;
 
   @Field()
   started: boolean;

@@ -9,6 +9,7 @@ import {
 } from "type-graphql";
 import { Service } from "typedi";
 import GameStartedNotification from "./GameStartedNotification";
+import GuessMadeNotification from "./GuessMadeNotification";
 
 @Resolver()
 @Service()
@@ -32,6 +33,15 @@ export class SubscriptionResolver {
   async gameStartedSubscription(
     @Root() payload: GameStartedNotification
   ): Promise<GameStartedNotification> {
+    return payload;
+  }
+
+  @Subscription(() => GuessMadeNotification, {
+    topics: TopicEnums.GUESSMADE,
+  })
+  async guessMadeSubscription(
+    @Root() payload: GuessMadeNotification
+  ): Promise<GuessMadeNotification> {
     return payload;
   }
 }

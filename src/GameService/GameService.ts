@@ -7,19 +7,21 @@ import GameSchema from "./GameSchema";
 export class GameService {
   constructor(@Inject("GAME") private readonly user: Model<Game>) {}
 
-  async getAll(): Promise<GameSchema[] | null> {
+  async getAll(): Promise<Omit<GameSchema, "guesses">[] | null> {
     return await this.user.find();
   }
 
-  async getById(id: string): Promise<GameSchema | null> {
+  async getById(id: string): Promise<Omit<GameSchema, "guesses"> | null> {
     return await this.user.findOne({ _id: id });
   }
 
-  async getByEmail(email: string): Promise<GameSchema | null> {
+  async getByEmail(email: string): Promise<Omit<GameSchema, "guesses"> | null> {
     return await this.user.findOne({ latitude: email }).exec();
   }
 
-  async createGame(userInfo: Partial<Game>): Promise<GameSchema> {
+  async createGame(
+    userInfo: Partial<Game>
+  ): Promise<Omit<GameSchema, "guesses">> {
     const user = new this.user(userInfo);
     return await user.save();
   }
@@ -27,7 +29,7 @@ export class GameService {
   async updateById(
     id: string,
     game: Partial<Game>
-  ): Promise<GameSchema | null> {
+  ): Promise<Omit<GameSchema, "guesses"> | null> {
     return this.user.findByIdAndUpdate(id, game, { returnDocument: "after" });
   }
 }

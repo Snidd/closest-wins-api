@@ -9,8 +9,10 @@ import { GameModel } from "./GameService/GameModel";
 import { SubscriptionServer } from "subscriptions-transport-ws";
 import { execute, subscribe } from "graphql";
 import { createServer } from "http";
+import { GuessModel } from "./GuessService/GuessModel";
 
 Container.set({ id: "GAME", factory: () => GameModel });
+Container.set({ id: "GUESS", factory: () => GuessModel });
 
 async function startServer() {
   require("dotenv").config(__dirname + ".env");
