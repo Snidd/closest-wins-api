@@ -32,6 +32,16 @@ type GameStartedNotification {
   started: Boolean!
 }
 
+"""Guess Schema"""
+type Guess {
+  _id: ID!
+  createdAt: DateTime!
+  latitude: Float!
+  longitude: Float!
+  playerName: String!
+  updatedAt: DateTime!
+}
+
 type Mutation {
   addGame(data: AddGameInput!): Game!
   startGame(id: String!): Game
@@ -40,6 +50,7 @@ type Mutation {
 type Query {
   game(id: String!): Game
   games: [Game!]!
+  guesses: [Guess]!
   hello: String!
   sample: String!
 }

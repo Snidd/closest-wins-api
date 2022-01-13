@@ -1,4 +1,6 @@
+import GuessSchema from "../GuessService/GuessSchema";
 import { Field, ObjectType, ID } from "type-graphql";
+import { OneToMany } from "typeorm";
 
 @ObjectType("Game", { description: "Game Schema" })
 export default class GameSchema {
@@ -16,6 +18,10 @@ export default class GameSchema {
 
   @Field()
   maxTimer: number;
+
+  @Field(() => [GuessSchema])
+  @OneToMany(() => GuessSchema, (guess) => guess.game)
+  guesses: GuessSchema[];
 
   @Field()
   createdAt: Date;
