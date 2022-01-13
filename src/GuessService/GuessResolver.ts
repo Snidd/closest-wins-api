@@ -46,11 +46,27 @@ export class GuessResolver {
     @Arg("data") newGuessData: MakeGuessInput,
     @PubSub() pubSub: PubSubEngine
   ): Promise<Omit<GuessSchema, "game"> | null> {
+    const game = await this.gameService.getById(newGuessData.game);
+    if (game === null || game.started === false) {
+      throw new Error(
+        "GameID: " +
+          newGuessData.game?.toHexString() +
+          " doesn't exist or isn't started."
+      );
+    }
+    const guess = await this.guessService.getByGameIdAndPlayerName(
+      newGuessData.game,
+      newGuessData.playerName
+    );
+    if (guess !== null) {
+      throw new Error("This player already guessed!");
+    }
+    console.log(JSON.stringify(guess));
     const payload: GuessMadeNotification = {
       gameId: newGuessData.game,
       playerName: newGuessData.playerName,
     };
-    pubSub.publish(TopicEnums.GAMESTARTED, payload);
+    pubSub.publish(TopicEnums.GUESSMADE, payload);
     return this.guessService.createGuess(newGuessData);
   }
 }

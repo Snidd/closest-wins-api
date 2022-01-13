@@ -1,4 +1,4 @@
-import { Model } from "mongoose";
+import { Model, Types } from "mongoose";
 import { Service, Inject } from "typedi";
 import { Game } from "./GameModel";
 import GameSchema from "./GameSchema";
@@ -11,7 +11,9 @@ export class GameService {
     return await this.user.find();
   }
 
-  async getById(id: string): Promise<Omit<GameSchema, "guesses"> | null> {
+  async getById(
+    id: string | Types.ObjectId
+  ): Promise<Omit<GameSchema, "guesses"> | null> {
     return await this.user.findOne({ _id: id });
   }
 

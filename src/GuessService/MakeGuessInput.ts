@@ -5,7 +5,7 @@ import { Guess } from "./GuessModel";
 
 @InputType({ description: "New Guess Input" })
 export class MakeGuessInput implements Partial<Guess> {
-  @Field(() => ObjectIdScalar, { name: "gameId" })
+  @Field(() => ObjectIdScalar)
   game: Types.ObjectId;
 
   @Field()

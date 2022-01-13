@@ -52,7 +52,7 @@ type GuessMadeNotification {
 
 """New Guess Input"""
 input MakeGuessInput {
-  gameId: ObjectId!
+  game: ObjectId!
   latitude: Float!
   longitude: Float!
   playerName: String!

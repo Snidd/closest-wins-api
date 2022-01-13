@@ -1,4 +1,4 @@
-import { Model } from "mongoose";
+import { Model, Types } from "mongoose";
 import { Service, Inject } from "typedi";
 import { Guess } from "./GuessModel";
 import GuessSchema from "./GuessSchema";
@@ -14,6 +14,13 @@ export class GuessService {
 
   async getByGameId(id: string): Promise<Omit<GuessSchema, "game">[] | null> {
     return await this.guess.find({ game: id });
+  }
+
+  async getByGameIdAndPlayerName(
+    id: string | Types.ObjectId,
+    playerName: string
+  ): Promise<Omit<GuessSchema, "game"> | null> {
+    return await this.guess.findOne({ game: id, playerName: playerName });
   }
 
   async createGuess(
