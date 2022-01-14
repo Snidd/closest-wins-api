@@ -7,6 +7,12 @@ export interface Game {
   maxTimer: number;
   createdAt: Date;
   updatedAt: Date;
+  shorthand: string;
+  adminKey: string;
+}
+
+export interface GameDoc extends Omit<Game, "guesses"> {
+  _id: string;
 }
 
 const schema = new Schema<Game>(
@@ -28,6 +34,14 @@ const schema = new Schema<Game>(
       type: Number,
       required: false,
       default: 90,
+    },
+    shorthand: {
+      type: String,
+      required: true,
+    },
+    adminKey: {
+      type: String,
+      required: true,
     },
   },
   { timestamps: true }

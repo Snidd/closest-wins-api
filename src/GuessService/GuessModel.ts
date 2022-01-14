@@ -9,6 +9,10 @@ export interface Guess {
   updatedAt: Date;
 }
 
+export interface GuessDoc extends Omit<Guess, "game"> {
+  _id: string;
+}
+
 const schema = new Schema<Guess>(
   {
     latitude: {

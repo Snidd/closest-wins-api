@@ -10,6 +10,20 @@ input AddGameInput {
   maxTimer: Float
 }
 
+"""Create Game Output"""
+type CreateGameOutput {
+  _id: ID!
+  adminKey: String!
+  createdAt: DateTime!
+  guesses: [Guess!]!
+  latitude: Float!
+  longitude: Float!
+  maxTimer: Float!
+  shorthand: String!
+  started: Boolean!
+  updatedAt: DateTime!
+}
+
 """
 The javascript `Date` as string. Type represents date and time as the ISO Date string.
 """
@@ -23,6 +37,7 @@ type Game {
   latitude: Float!
   longitude: Float!
   maxTimer: Float!
+  shorthand: String!
   started: Boolean!
   updatedAt: DateTime!
 }
@@ -59,9 +74,9 @@ input MakeGuessInput {
 }
 
 type Mutation {
-  addGame(data: AddGameInput!): Game!
+  addGame(data: AddGameInput!): CreateGameOutput!
   makeGuess(data: MakeGuessInput!): Guess!
-  startGame(id: String!): Game
+  startGame(adminKey: String!, id: String!): Game
 }
 
 """Mongo object id scalar type"""

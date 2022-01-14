@@ -24,6 +24,9 @@ export default class GameSchema {
   guesses: GuessSchema[];
 
   @Field()
+  shorthand: string;
+
+  @Field()
   createdAt: Date;
 
   @Field()
