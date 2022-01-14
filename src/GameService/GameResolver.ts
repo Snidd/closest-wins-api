@@ -17,6 +17,8 @@ import { GameService } from "./GameService";
 import { GuessService } from "../GuessService/GuessService";
 import { generate } from "randomstring";
 import AddGameOutput from "./AddGameOutput";
+import GameStartedNotification from "../SubscriptionService/GameStartedNotification";
+import { StartGameInput } from "./StartGameInput";
 
 @Resolver(GameSchema)
 @Service()
@@ -69,15 +71,15 @@ export class GameResolver {
 
   @Mutation(() => GameSchema, { nullable: true })
   async startGame(
-    @Arg("id") id: string,
-    @Arg("adminKey") adminKey: string,
+    @Arg("gameInput") startGame: StartGameInput,
     @PubSub() pubSub: PubSubEngine
   ): Promise<Omit<GameSchema, "guesses"> | null> {
-    const game = await this.gameService.getById(id);
-    if (game === null || game.adminKey !== adminKey) {
+    const game = await this.gameService.getById(startGame.id);
+    if (game === null || game.adminKey !== startGame.adminKey) {
       throw new Error("Invalid Game!");
     }
-    pubSub.publish(TopicEnums.GAMESTARTED, { _id: id, started: true });
-    return this.gameService.updateById(id, { started: true });
+    const payload: GameStartedNotification = { ...game };
+    pubSub.publish(TopicEnums.GAMESTARTED, payload);
+    return this.gameService.updateById(startGame.id, { started: true });
   }
 }

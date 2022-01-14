@@ -2,26 +2,24 @@ import GuessSchema from "../GuessService/GuessSchema";
 import { Field, ObjectType, ID } from "type-graphql";
 import { OneToMany } from "typeorm";
 
-@ObjectType("Game", { description: "Game Schema" })
-export default class GameSchema {
+@ObjectType()
+export class BasicGameSchema {
   @Field(() => ID)
   _id: string;
 
   @Field()
   started: boolean;
 
+  @Field({ nullable: true })
   @Field()
   latitude: number;
 
+  @Field({ nullable: true })
   @Field()
   longitude: number;
 
-  @Field()
+  @Field({ nullable: true })
   maxTimer: number;
-
-  @Field(() => [GuessSchema])
-  @OneToMany(() => GuessSchema, (guess) => guess.game)
-  guesses: GuessSchema[];
 
   @Field()
   shorthand: string;
@@ -31,4 +29,11 @@ export default class GameSchema {
 
   @Field()
   updatedAt: Date;
+}
+
+@ObjectType("Game", { description: "Game Schema" })
+export default class GameSchema extends BasicGameSchema {
+  @Field(() => [GuessSchema])
+  @OneToMany(() => GuessSchema, (guess) => guess.game)
+  guesses: GuessSchema[];
 }

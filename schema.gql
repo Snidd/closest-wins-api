@@ -5,20 +5,17 @@
 
 """New Game data"""
 input AddGameInput {
-  latitude: Float!
-  longitude: Float!
   maxTimer: Float
 }
 
 """Create Game Output"""
-type CreateGameOutput {
+type AddGameOutput {
   _id: ID!
   adminKey: String!
   createdAt: DateTime!
-  guesses: [Guess!]!
-  latitude: Float!
-  longitude: Float!
-  maxTimer: Float!
+  latitude: Float
+  longitude: Float
+  maxTimer: Float
   shorthand: String!
   started: Boolean!
   updatedAt: DateTime!
@@ -34,9 +31,9 @@ type Game {
   _id: ID!
   createdAt: DateTime!
   guesses: [Guess!]!
-  latitude: Float!
-  longitude: Float!
-  maxTimer: Float!
+  latitude: Float
+  longitude: Float
+  maxTimer: Float
   shorthand: String!
   started: Boolean!
   updatedAt: DateTime!
@@ -44,8 +41,14 @@ type Game {
 
 """Game started notification"""
 type GameStartedNotification {
-  _id: String!
+  _id: ID!
+  createdAt: DateTime!
+  latitude: Float
+  longitude: Float
+  maxTimer: Float
+  shorthand: String!
   started: Boolean!
+  updatedAt: DateTime!
 }
 
 """Guess Schema"""
@@ -74,9 +77,9 @@ input MakeGuessInput {
 }
 
 type Mutation {
-  addGame(data: AddGameInput!): CreateGameOutput!
+  addGame(data: AddGameInput!): AddGameOutput!
   makeGuess(data: MakeGuessInput!): Guess!
-  startGame(adminKey: String!, id: String!): Game
+  startGame(gameInput: StartGameInput!): Game
 }
 
 """Mongo object id scalar type"""
@@ -88,6 +91,15 @@ type Query {
   guesses(gameId: String!): [Guess]!
   hello: String!
   sample: String!
+}
+
+"""Start Game data"""
+input StartGameInput {
+  adminKey: String!
+  id: String!
+  latitude: Float!
+  longitude: Float!
+  maxTimer: Float
 }
 
 type Subscription {

@@ -17,7 +17,6 @@ import { GuessService } from "./GuessService";
 import { MakeGuessInput } from "./MakeGuessInput";
 import GameSchema from "../GameService/GameSchema";
 import { GameService } from "../GameService/GameService";
-
 @Resolver(GuessSchema)
 @Service()
 export class GuessResolver {

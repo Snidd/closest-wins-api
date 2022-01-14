@@ -1,12 +1,7 @@
-import { Field, ObjectType } from "type-graphql";
+import { ObjectType } from "type-graphql";
+import { BasicGameSchema } from "../GameService/GameSchema";
 
 @ObjectType("GameStartedNotification", {
   description: "Game started notification",
 })
-export default class GameStartedNotification {
-  @Field()
-  started: boolean;
-
-  @Field()
-  _id: string;
-}
+export default class GameStartedNotification extends BasicGameSchema {}

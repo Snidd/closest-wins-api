@@ -1,10 +1,8 @@
 import { Field, ObjectType } from "type-graphql";
-import GameSchema from "./GameSchema";
+import { BasicGameSchema } from "./GameSchema";
 
-@ObjectType("CreateGameOutput", { description: "Create Game Output" })
-export default class AddGameOutput extends GameSchema {
+@ObjectType("AddGameOutput", { description: "Create Game Output" })
+export default class AddGameOutput extends BasicGameSchema {
   @Field()
   adminKey: string;
-
-  guesses: never;
 }

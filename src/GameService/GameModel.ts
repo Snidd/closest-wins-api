@@ -24,11 +24,11 @@ const schema = new Schema<Game>(
     },
     latitude: {
       type: Number,
-      required: true,
+      required: false,
     },
     longitude: {
       type: Number,
-      required: true,
+      required: false,
     },
     maxTimer: {
       type: Number,
