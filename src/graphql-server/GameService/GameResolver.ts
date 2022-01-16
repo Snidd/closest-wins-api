@@ -1,5 +1,5 @@
 import "reflect-metadata";
-import { TopicEnums } from "../types/TopicEnums";
+import { TopicEnums } from "@graphql/types/TopicEnums";
 import {
   Arg,
   FieldResolver,
@@ -13,11 +13,11 @@ import {
 import { Inject, Service } from "typedi";
 import { AddGameInput } from "./AddGameInput";
 import GameSchema from "./GameSchema";
-import { GameService } from "./GameService";
-import { GuessService } from "../GuessService/GuessService";
+import { GameService } from "@db/Game/GameService";
+import { GuessService } from "@db/Guess/GuessService";
 import { generate } from "randomstring";
 import AddGameOutput from "./AddGameOutput";
-import GameStartedNotification from "../SubscriptionService/GameStartedNotification";
+import GameStartedNotification from "@graphql/SubscriptionService/GameStartedNotification";
 import { StartGameInput } from "./StartGameInput";
 
 @Resolver(GameSchema)

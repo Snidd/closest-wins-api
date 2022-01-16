@@ -21,7 +21,13 @@
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "skipLibCheck": true,
-    "rootDir": "src"
+    "rootDir": "src",
+    "baseUrl": "src",
+    "paths": {
+      "@app/*": ["./*"],
+      "@graphql/*": ["graphql-server/*"],
+      "@db/*": ["db-service/*"]
+    }
   },
 
   "exclude": ["node_modules"],

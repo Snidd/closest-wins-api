@@ -1,5 +1,5 @@
-import { MongoMemoryServer } from "mongodb-memory-server";
 import * as mongoose from "mongoose";
+declare var __MONGO_URI__: string;
 
 export interface TestDB {
   openDatabase(): Promise<void>;
@@ -7,11 +7,8 @@ export interface TestDB {
   clearDatabase(): Promise<void>;
 }
 
-let mongoServer: MongoMemoryServer;
-
 export const openDatabase = async () => {
-  mongoServer = await MongoMemoryServer.create();
-  await mongoose.connect(mongoServer.getUri(), {});
+  await mongoose.connect(__MONGO_URI__, {});
 };
 
 export const closeDatabase = async () => {

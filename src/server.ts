@@ -2,14 +2,14 @@ import "reflect-metadata";
 import { ApolloServer } from "apollo-server-express";
 import * as Express from "express";
 import { buildSchema } from "type-graphql";
-import { resolvers } from "./resolvers";
+import { resolvers } from "@graphql/resolvers";
 import Container from "typedi";
-import { GameModel } from "./GameService/GameModel";
+import { GameModel } from "@db/Game/GameModel";
 import { SubscriptionServer } from "subscriptions-transport-ws";
 import { execute, subscribe } from "graphql";
 import { createServer } from "http";
-import { GuessModel } from "./GuessService/GuessModel";
-import { connect, disconnect } from "./db/connect";
+import { GuessModel } from "@db/Guess/GuessModel";
+import { connect, disconnect } from "@db/connect";
 
 Container.set({ id: "GAME", factory: () => GameModel });
 Container.set({ id: "GUESS", factory: () => GuessModel });

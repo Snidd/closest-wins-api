@@ -1,5 +1,5 @@
 import { Types } from "mongoose";
-import { ObjectIdScalar } from "../types/ObjectIdScalar";
+import { ObjectIdScalar } from "@graphql/types/ObjectIdScalar";
 import { Field, ObjectType } from "type-graphql";
 
 @ObjectType("GuessMadeNotification", {

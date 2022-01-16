@@ -1,4 +1,4 @@
-import GameSchema from "../GameService/GameSchema";
+import GameSchema from "@graphql/GameService/GameSchema";
 import { Field, ObjectType, ID } from "type-graphql";
 import { ManyToOne } from "typeorm";
 

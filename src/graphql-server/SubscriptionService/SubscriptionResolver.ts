@@ -1,4 +1,4 @@
-import { TopicEnums } from "../types/TopicEnums";
+import { TopicEnums } from "@graphql/types/TopicEnums";
 import {
   PubSub,
   PubSubEngine,

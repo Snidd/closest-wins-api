@@ -1,10 +1,9 @@
 import { Types } from "mongoose";
-import { ObjectIdScalar } from "../types/ObjectIdScalar";
+import { ObjectIdScalar } from "@graphql/types/ObjectIdScalar";
 import { Field, InputType } from "type-graphql";
-import { Guess } from "./GuessModel";
 
 @InputType({ description: "New Guess Input" })
-export class MakeGuessInput implements Partial<Guess> {
+export class MakeGuessInput {
   @Field(() => ObjectIdScalar)
   game: Types.ObjectId;
 

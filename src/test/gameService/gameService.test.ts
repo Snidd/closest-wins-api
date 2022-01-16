@@ -1,9 +1,5 @@
-import {
-  Game,
-  GameModel,
-  schema,
-} from "../../graphql-server/GameService/GameModel";
-import { GameService } from "../../graphql-server/GameService/GameService";
+import { Game, GameModel, schema } from "@db/Game/GameModel";
+import { GameService } from "@db/Game/GameService";
 import { model } from "mongoose";
 import { clearDatabase, closeDatabase, openDatabase } from "../environment/db";
 
@@ -18,7 +14,7 @@ describe("Test gameService", () => {
     expect(gameService).toBeDefined();
   });
 
-  test("can create gameDoc", async () => {
+  test("can create simple gameDoc", async () => {
     const gameModel = model<Game>("Game", schema);
 
     const gameService = new GameService(gameModel);
