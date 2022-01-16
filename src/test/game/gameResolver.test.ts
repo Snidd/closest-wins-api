@@ -35,10 +35,10 @@ describe("Test GameResolver", () => {
         },
       },
     });
-    console.log(JSON.stringify(res));
 
-    expect(res.data).not.toBe(null);
-    expect(res.data?.adminKey).not.toBe(null);
-    expect(res.data?.shorthand).not.toBe(null);
+    expect(res.errors).toBe(undefined);
+    expect(res.data?.addGame).not.toBe(undefined);
+    expect(res.data?.addGame.adminKey).not.toBe(undefined);
+    expect(res.data?.addGame.shorthand).not.toBe(undefined);
   });
 });
