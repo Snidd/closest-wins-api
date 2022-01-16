@@ -1,7 +1,7 @@
 import { Model, Types } from "mongoose";
 import { Service, Inject } from "typedi";
 import { Guess, GuessDoc } from "./GuessModel";
-import { MakeGuessInput } from "@app/graphql-server/guess/MakeGuessInput";
+import { MakeGuessInput } from "@graphql/guess/MakeGuessInput";
 
 @Service()
 export class GuessService {

@@ -17,29 +17,39 @@ export const createSchema = async () => {
 };
 
 export const createApolloServer = async (
-  httpServer: Server
+  httpServer?: Server
 ): Promise<ApolloServer<ExpressContext>> => {
   const schema = await createSchema();
 
-  const subscriptionServer = SubscriptionServer.create(
-    { schema, execute, subscribe },
-    { server: httpServer, path: "/graphql" }
-  );
+  let plugin:
+    | {
+        serverWillStart(): Promise<{
+          drainServer(): Promise<void>;
+        }>;
+      }
+    | undefined = undefined;
+
+  if (httpServer !== undefined) {
+    const subscriptionServer = SubscriptionServer.create(
+      { schema, execute, subscribe },
+      { server: httpServer, path: "/graphql" }
+    );
+
+    plugin = {
+      async serverWillStart() {
+        return {
+          async drainServer() {
+            subscriptionServer.close();
+          },
+        };
+      },
+    };
+  }
 
   const server = new ApolloServer({
     schema,
     context: () => ({}),
-    plugins: [
-      {
-        async serverWillStart() {
-          return {
-            async drainServer() {
-              subscriptionServer.close();
-            },
-          };
-        },
-      },
-    ],
+    plugins: plugin !== undefined ? [plugin] : [],
   });
 
   return server;

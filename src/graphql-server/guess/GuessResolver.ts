@@ -1,5 +1,5 @@
 import "reflect-metadata";
-import GuessMadeNotification from "@app/graphql-server/subscription/GuessMadeNotification";
+import GuessMadeNotification from "@graphql/subscription/GuessMadeNotification";
 import { TopicEnums } from "@graphql/types/TopicEnums";
 import {
   Arg,
@@ -13,10 +13,10 @@ import {
 } from "type-graphql";
 import { Inject, Service } from "typedi";
 import GuessSchema from "./GuessSchema";
-import { GuessService } from "@app/db-service/guess/GuessService";
+import { GuessService } from "@db/guess/GuessService";
 import { MakeGuessInput } from "./MakeGuessInput";
-import GameSchema from "@app/graphql-server/game/GameSchema";
-import { GameService } from "@app/db-service/game/GameService";
+import GameSchema from "@graphql/game/GameSchema";
+import { GameService } from "@db/game/GameService";
 @Resolver(GuessSchema)
 @Service()
 export class GuessResolver {

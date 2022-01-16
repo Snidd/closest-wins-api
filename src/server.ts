@@ -1,9 +1,9 @@
 import "reflect-metadata";
 import * as Express from "express";
 import Container from "typedi";
-import { GameModel } from "@app/db-service/game/GameModel";
+import { GameModel } from "@db/game/GameModel";
 import { createServer } from "http";
-import { GuessModel } from "@app/db-service/guess/GuessModel";
+import { GuessModel } from "@db/guess/GuessModel";
 import { connect } from "@db/connect";
 import { createApolloServer } from "./graphql-server/createServer";
 

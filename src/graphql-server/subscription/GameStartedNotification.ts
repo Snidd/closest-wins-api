@@ -1,5 +1,5 @@
 import { ObjectType } from "type-graphql";
-import { BasicGameSchema } from "@app/graphql-server/game/GameSchema";
+import { BasicGameSchema } from "@graphql/game/GameSchema";
 
 @ObjectType("GameStartedNotification", {
   description: "Game started notification",

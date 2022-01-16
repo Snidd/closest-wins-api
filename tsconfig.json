@@ -24,7 +24,6 @@
     "rootDir": "src",
     "baseUrl": "src",
     "paths": {
-      "@app/*": ["./*"],
       "@graphql/*": ["graphql-server/*"],
       "@db/*": ["db-service/*"]
     }
