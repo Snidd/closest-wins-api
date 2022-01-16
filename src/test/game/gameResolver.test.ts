@@ -12,6 +12,8 @@ describe("Test GameResolver", () => {
 });
 
 /*
+https://www.apollographql.com/docs/apollo-server/testing/testing/#end-to-end-testing
+
 it('fetches single launch', async () => {
   const userAPI = new UserAPI({ store });
   const launchAPI = new LaunchAPI();
