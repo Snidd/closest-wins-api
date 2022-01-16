@@ -15,7 +15,7 @@ export interface GameDoc extends Omit<Game, "guesses"> {
   _id: string;
 }
 
-const schema = new Schema<Game>(
+export const schema = new Schema<Game>(
   {
     started: {
       type: Boolean,

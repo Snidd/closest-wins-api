@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "jest",
+    "test": "jest --runInBand --detectOpenHandles",
     "dev": "ts-node-dev --respawn src/graphql-server/server.ts"
   },
   "keywords": [],
@@ -28,13 +28,13 @@
     "typeorm": "^0.2.41"
   },
   "devDependencies": {
+    "mongodb-memory-server": "^8.1.0",
     "@types/express": "^4.17.13",
     "@types/graphql": "^14.5.0",
     "@types/jest": "^27.4.0",
     "@types/mongoose": "^5.11.97",
     "@types/node": "^17.0.8",
     "jest": "^27.4.7",
-    "mongodb-memory-server": "^8.1.0",
     "nodemon": "^2.0.15",
     "ts-jest": "^27.1.2",
     "ts-node": "^10.4.0",

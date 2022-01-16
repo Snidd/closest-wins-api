@@ -6,9 +6,6 @@ const config: Config.InitialOptions = {
   preset: "ts-jest",
   testEnvironment: "node",
   testMatch: ["**/test/**/*Test.ts"],
-  globalSetup: "<rootDir>/src/test/globalSetup.ts",
-  globalTeardown: "<rootDir>/src/test/globalTeardown.ts",
-  setupFilesAfterEnv: ["<rootDir>/src/test/setupFile.ts"],
   maxWorkers: 4,
 };
 export default config;
