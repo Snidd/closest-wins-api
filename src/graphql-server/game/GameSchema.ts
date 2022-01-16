@@ -1,4 +1,4 @@
-import GuessSchema from "../GuessService/GuessSchema";
+import GuessSchema from "../guess/GuessSchema";
 import { Field, ObjectType, ID } from "type-graphql";
 import { OneToMany } from "typeorm";
 

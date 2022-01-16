@@ -1,6 +1,6 @@
-import { GameResolver } from "./GameService/GameResolver";
-import { GuessResolver } from "./GuessService/GuessResolver";
-import { SubscriptionResolver } from "./SubscriptionService/SubscriptionResolver";
+import { GameResolver } from "./game/GameResolver";
+import { GuessResolver } from "./guess/GuessResolver";
+import { SubscriptionResolver } from "./subscription/SubscriptionResolver";
 
 export const resolvers = [
   GameResolver,

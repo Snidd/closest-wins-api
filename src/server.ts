@@ -4,11 +4,11 @@ import * as Express from "express";
 import { buildSchema } from "type-graphql";
 import { resolvers } from "@graphql/resolvers";
 import Container from "typedi";
-import { GameModel } from "@db/Game/GameModel";
+import { GameModel } from "@app/db-service/game/GameModel";
 import { SubscriptionServer } from "subscriptions-transport-ws";
 import { execute, subscribe } from "graphql";
 import { createServer } from "http";
-import { GuessModel } from "@db/Guess/GuessModel";
+import { GuessModel } from "@app/db-service/guess/GuessModel";
 import { connect, disconnect } from "@db/connect";
 
 Container.set({ id: "GAME", factory: () => GameModel });

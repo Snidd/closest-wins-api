@@ -13,11 +13,11 @@ import {
 import { Inject, Service } from "typedi";
 import { AddGameInput } from "./AddGameInput";
 import GameSchema from "./GameSchema";
-import { GameService } from "@db/Game/GameService";
-import { GuessService } from "@db/Guess/GuessService";
+import { GameService } from "@app/db-service/game/GameService";
+import { GuessService } from "@app/db-service/guess/GuessService";
 import { generate } from "randomstring";
 import AddGameOutput from "./AddGameOutput";
-import GameStartedNotification from "@graphql/SubscriptionService/GameStartedNotification";
+import GameStartedNotification from "@app/graphql-server/subscription/GameStartedNotification";
 import { StartGameInput } from "./StartGameInput";
 
 @Resolver(GameSchema)

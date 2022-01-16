@@ -1,5 +1,5 @@
-import { Game, GameModel, schema } from "@db/Game/GameModel";
-import { GameService } from "@db/Game/GameService";
+import { Game, GameModel, schema } from "@db/game/GameModel";
+import { GameService } from "@db/game/GameService";
 import { model } from "mongoose";
 import { clearDatabase, closeDatabase, openDatabase } from "../environment/db";
 
