@@ -1,4 +1,4 @@
-import { model, Schema, Model } from "mongoose";
+import { model, Schema, Model, Types } from "mongoose";
 
 export interface Game {
   started: boolean;
@@ -12,7 +12,7 @@ export interface Game {
 }
 
 export interface GameDoc extends Omit<Game, "guesses"> {
-  _id: string;
+  _id: Types.ObjectId;
 }
 
 export const schema = new Schema<Game>(

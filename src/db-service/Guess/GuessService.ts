@@ -7,16 +7,16 @@ import { MakeGuessInput } from "@graphql/guess/MakeGuessInput";
 export class GuessService {
   constructor(@Inject("GUESS") private readonly guess: Model<Guess>) {}
 
-  async getById(id: string): Promise<GuessDoc | null> {
+  async getById(id: Types.ObjectId): Promise<GuessDoc | null> {
     return await this.guess.findOne({ _id: id });
   }
 
-  async getByGameId(id: string): Promise<GuessDoc[] | null> {
+  async getByGameId(id: Types.ObjectId): Promise<GuessDoc[] | null> {
     return await this.guess.find({ game: id });
   }
 
   async getByGameIdAndPlayerName(
-    id: string | Types.ObjectId,
+    id: Types.ObjectId,
     playerName: string
   ): Promise<GuessDoc | null> {
     return await this.guess.findOne({ game: id, playerName: playerName });

@@ -1,11 +1,12 @@
 import GuessSchema from "../guess/GuessSchema";
 import { Field, ObjectType, ID } from "type-graphql";
 import { OneToMany } from "typeorm";
+import { Types } from "mongoose";
 
 @ObjectType()
 export class BasicGameSchema {
   @Field(() => ID)
-  _id: string;
+  _id: Types.ObjectId;
 
   @Field()
   started: boolean;

@@ -11,7 +11,7 @@ export class GameService {
     return await this.game.find();
   }
 
-  async getById(id: string | Types.ObjectId): Promise<GameDoc | null> {
+  async getById(id: Types.ObjectId): Promise<GameDoc | null> {
     return await this.game.findOne({ _id: id });
   }
 
@@ -43,7 +43,10 @@ export class GameService {
     return await user.save();
   }
 
-  async updateById(id: string, game: Partial<Game>): Promise<GameDoc | null> {
+  async updateById(
+    id: Types.ObjectId,
+    game: Partial<Game>
+  ): Promise<GameDoc | null> {
     return this.game.findByIdAndUpdate(id, game, { returnDocument: "after" });
   }
 }

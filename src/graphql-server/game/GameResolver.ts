@@ -19,6 +19,8 @@ import { generate } from "randomstring";
 import AddGameOutput from "./AddGameOutput";
 import GameStartedNotification from "@graphql/subscription/GameStartedNotification";
 import { StartGameInput } from "./StartGameInput";
+import { Types } from "mongoose";
+import { ObjectIdScalar } from "@graphql/types/ObjectIdScalar";
 
 @Resolver(GameSchema)
 @Service()
@@ -41,7 +43,7 @@ export class GameResolver {
 
   @Query(() => GameSchema, { nullable: true })
   async game(
-    @Arg("id") id: string
+    @Arg("id", () => ObjectIdScalar) id: Types.ObjectId
   ): Promise<Omit<GameSchema, "guesses"> | null> {
     const game = await this.gameService.getById(id);
     if (game === null) {

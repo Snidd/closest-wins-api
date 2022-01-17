@@ -70,7 +70,7 @@ type GuessMadeNotification {
 
 """New Guess Input"""
 input MakeGuessInput {
-  game: ObjectId!
+  gameId: ObjectId!
   latitude: Float!
   longitude: Float!
   playerName: String!
@@ -86,9 +86,9 @@ type Mutation {
 scalar ObjectId
 
 type Query {
-  game(id: String!): Game
+  game(id: ObjectId!): Game
   games: [Game!]!
-  guesses(gameId: String!): [Guess]!
+  guesses(gameId: ObjectId!): [Guess]!
   hello: String!
   sample: String!
 }
@@ -96,14 +96,14 @@ type Query {
 """Start Game data"""
 input StartGameInput {
   adminKey: String!
-  id: String!
+  id: ObjectId!
   latitude: Float!
   longitude: Float!
   maxTimer: Float
 }
 
 type Subscription {
-  gameStartedSubscription: GameStartedNotification!
+  gameStartedSubscription(gameId: ObjectId!): GameStartedNotification
   guessMadeSubscription: GuessMadeNotification!
   subscription: String!
 }

@@ -1,9 +1,11 @@
+import { ObjectIdScalar } from "@graphql/types/ObjectIdScalar";
+import { Types } from "mongoose";
 import { Field, InputType } from "type-graphql";
 
 @InputType({ description: "Start Game data" })
 export class StartGameInput {
-  @Field()
-  id: string;
+  @Field(() => ObjectIdScalar)
+  id: Types.ObjectId;
 
   @Field()
   adminKey: string;

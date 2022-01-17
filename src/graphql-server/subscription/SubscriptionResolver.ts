@@ -1,5 +1,8 @@
+import { ObjectIdScalar } from "@graphql/types/ObjectIdScalar";
 import { TopicEnums } from "@graphql/types/TopicEnums";
+import { Types } from "mongoose";
 import {
+  Arg,
   PubSub,
   PubSubEngine,
   Query,
@@ -28,12 +31,24 @@ export class SubscriptionResolver {
   }
 
   @Subscription(() => GameStartedNotification, {
+    nullable: true,
     topics: TopicEnums.GAMESTARTED,
+    filter: ({ payload, args }) => {
+      const success = args.gameId.equals(payload._doc._id);
+      console.log(success);
+      return success;
+    },
   })
   async gameStartedSubscription(
-    @Root() payload: GameStartedNotification
-  ): Promise<GameStartedNotification> {
-    return payload;
+    @Root() payload: { _doc: GameStartedNotification },
+    @Arg("gameId", () => ObjectIdScalar) gameId: Types.ObjectId
+  ): Promise<GameStartedNotification | null> {
+    console.log("checking payload vs id");
+    console.log(JSON.stringify(payload));
+    if (gameId.equals(payload._doc._id)) {
+      return payload._doc;
+    }
+    return null;
   }
 
   @Subscription(() => GuessMadeNotification, {

@@ -10,7 +10,7 @@ export interface Guess {
 }
 
 export interface GuessDoc extends Omit<Guess, "game"> {
-  _id: string;
+  _id: Types.ObjectId;
 }
 
 const schema = new Schema<Guess>(

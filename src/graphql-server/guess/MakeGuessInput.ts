@@ -5,7 +5,7 @@ import { Field, InputType } from "type-graphql";
 @InputType({ description: "New Guess Input" })
 export class MakeGuessInput {
   @Field(() => ObjectIdScalar)
-  game: Types.ObjectId;
+  gameId: Types.ObjectId;
 
   @Field()
   latitude: number;
