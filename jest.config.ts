@@ -8,6 +8,7 @@ const config: Config.InitialOptions = {
   preset: "ts-jest",
   testEnvironment: "<rootDir>/src/test/environment/mongodb.ts",
   testMatch: ["**/test/**/*.test.ts"],
+  setupFilesAfterEnv: ["<rootDir>/src/test/environment/extend.ts"],
   maxWorkers: 4,
   modulePaths: [compilerOptions.baseUrl],
   moduleNameMapper: pathsToModuleNameMapper(compilerOptions.paths),

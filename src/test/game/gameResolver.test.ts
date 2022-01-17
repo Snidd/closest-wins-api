@@ -22,6 +22,20 @@ describe("Test GameResolver", () => {
     }
   }`;
 
+  /*
+  const GAME_STARTED_SUBSCRIPTION = `subscription Subscription {
+    gameStartedSubscription {
+      started
+      longitude
+      latitude
+      maxTimer
+      shorthand
+      createdAt
+      updatedAt
+    }
+  }`;
+*/
+
   test("can call addGame and make a simple game", async () => {
     Container.set({ id: "GAME", factory: () => GameModel });
     Container.set({ id: "GUESS", factory: () => GuessModel });
@@ -38,7 +52,26 @@ describe("Test GameResolver", () => {
 
     expect(res.errors).toBe(undefined);
     expect(res.data?.addGame).not.toBe(undefined);
-    expect(res.data?.addGame.adminKey).not.toBe(undefined);
-    expect(res.data?.addGame.shorthand).not.toBe(undefined);
+    expect(res.data?.addGame).toHaveProperties([
+      "_id",
+      "started",
+      "latitude",
+      "longitude",
+      "maxTimer",
+      "shorthand",
+      "adminKey",
+      "updatedAt",
+    ]);
+
+    /*
+    ([
+      "_id",
+      "started",
+      "latitude",
+      "longitude",
+      "maxTimer",
+      "shorthand",
+      "adminKey",
+    ]);*/
   });
 });
