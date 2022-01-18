@@ -12,7 +12,7 @@ import {
 } from "type-graphql";
 import { Inject, Service } from "typedi";
 import { AddGameInput } from "./AddGameInput";
-import GameSchema from "./GameSchema";
+import GameSchema, { BasicGameSchema } from "./GameSchema";
 import { GameService } from "@db/game/GameService";
 import { GuessService } from "@db/guess/GuessService";
 import { generate } from "randomstring";
@@ -21,6 +21,7 @@ import GameStartedNotification from "@graphql/subscription/GameStartedNotificati
 import { StartGameInput } from "./StartGameInput";
 import { Types } from "mongoose";
 import { ObjectIdScalar } from "@graphql/types/ObjectIdScalar";
+import PlayerAddedNotification from "@graphql/subscription/PlayerAddedNotification";
 
 @Resolver(GameSchema)
 @Service()
@@ -83,5 +84,39 @@ export class GameResolver {
     const payload: GameStartedNotification = { ...game };
     pubSub.publish(TopicEnums.GAMESTARTED, payload);
     return this.gameService.updateById(startGame.id, { started: true });
+  }
+
+  @Mutation(() => GameSchema, { nullable: true })
+  async addPlayer(
+    @Arg("gameId", () => ObjectIdScalar) gameId: Types.ObjectId,
+    @Arg("playerName") playerName: string,
+    @Arg("sessionId") playerSessionId: string,
+    @PubSub() pubSub: PubSubEngine
+  ): Promise<BasicGameSchema | null> {
+    const game = await this.gameService.getById(gameId);
+    if (game === null) return null;
+
+    if (
+      game.players.find(
+        (p) =>
+          p.playerSessionId === playerSessionId || p.playerName === playerName
+      ) !== undefined
+    ) {
+      throw new Error("That player already exists!");
+    }
+
+    game.players.push({
+      playerName: playerName,
+      playerSessionId: playerSessionId,
+    });
+
+    const payload: PlayerAddedNotification = {
+      gameId: gameId,
+      playerName: playerName,
+    };
+
+    pubSub.publish(TopicEnums.PLAYERADDED, payload);
+
+    return await this.gameService.updateById(gameId, game);
   }
 }

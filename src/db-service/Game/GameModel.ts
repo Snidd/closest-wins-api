@@ -11,7 +11,7 @@ export interface Game {
   updatedAt: Date;
   shorthand: string;
   adminKey: string;
-  players: Player[];
+  players: Types.Array<Player>;
   guesses: Types.Array<Guess>;
 }
 

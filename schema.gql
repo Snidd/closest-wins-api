@@ -85,12 +85,19 @@ type MakeGuessResponse {
 
 type Mutation {
   addGame(data: AddGameInput!): AddGameOutput!
+  addPlayer(gameId: ObjectId!, playerName: String!, sessionId: String!): Game
   makeGuess(data: MakeGuessInput!): MakeGuessResponse!
   startGame(gameInput: StartGameInput!): Game
 }
 
 """Mongo object id scalar type"""
 scalar ObjectId
+
+"""Player added notification"""
+type PlayerAddedNotification {
+  gameId: ObjectId!
+  playerName: String!
+}
 
 type Query {
   game(id: ObjectId!): Game
@@ -112,5 +119,6 @@ input StartGameInput {
 type Subscription {
   gameStartedSubscription(gameId: ObjectId!): GameStartedNotification
   guessMadeSubscription: GuessMadeNotification!
+  playerAddedSubscription(gameId: ObjectId!): PlayerAddedNotification
   subscription: String!
 }

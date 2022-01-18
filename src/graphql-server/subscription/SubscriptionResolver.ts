@@ -13,6 +13,7 @@ import {
 import { Service } from "typedi";
 import GameStartedNotification from "./GameStartedNotification";
 import GuessMadeNotification from "./GuessMadeNotification";
+import PlayerAddedNotification from "./PlayerAddedNotification";
 
 @Resolver()
 @Service()
@@ -47,6 +48,33 @@ export class SubscriptionResolver {
     console.log(JSON.stringify(payload));
     if (gameId.equals(payload._doc._id)) {
       return payload._doc;
+    }
+    return null;
+  }
+
+  @Subscription(() => PlayerAddedNotification, {
+    nullable: true,
+    topics: TopicEnums.PLAYERADDED,
+    filter: ({
+      payload,
+      args,
+    }: {
+      payload: PlayerAddedNotification;
+      args: any;
+    }) => {
+      console.log(payload);
+      console.log(args);
+      const success = args.gameId.equals(payload.gameId);
+      console.log(success);
+      return success;
+    },
+  })
+  async playerAddedSubscription(
+    @Root() payload: PlayerAddedNotification,
+    @Arg("gameId", () => ObjectIdScalar) gameId: Types.ObjectId
+  ): Promise<PlayerAddedNotification | null> {
+    if (gameId.equals(payload.gameId)) {
+      return payload;
     }
     return null;
   }
