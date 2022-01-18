@@ -1,7 +1,4 @@
-import { GameModel } from "@db/game/GameModel";
-import { GuessModel } from "@db/guess/GuessModel";
 import { createApolloServer } from "@graphql/createServer";
-import Container from "typedi";
 import { clearDatabase, closeDatabase, openDatabase } from "../environment/db";
 
 describe("Test GameResolver", () => {
@@ -23,9 +20,6 @@ describe("Test GameResolver", () => {
   }`;
 
   test("can call addGame and make a simple game", async () => {
-    Container.set({ id: "GAME", factory: () => GameModel });
-    Container.set({ id: "GUESS", factory: () => GuessModel });
-
     const server = await createApolloServer();
     const res = await server.executeOperation({
       query: ADD_GAME,
