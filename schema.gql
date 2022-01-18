@@ -43,8 +43,6 @@ type Game {
 type GameStartedNotification {
   _id: ID!
   createdAt: DateTime!
-  latitude: Float
-  longitude: Float
   maxTimer: Float
   shorthand: String!
   started: Boolean!

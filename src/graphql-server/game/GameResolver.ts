@@ -81,9 +81,14 @@ export class GameResolver {
     if (game === null || game.adminKey !== startGame.adminKey) {
       throw new Error("Invalid Game!");
     }
-    const payload: GameStartedNotification = { ...game };
+    const payload: GameStartedNotification = game;
     pubSub.publish(TopicEnums.GAMESTARTED, payload);
-    return this.gameService.updateById(startGame.id, { started: true });
+    return this.gameService.updateById(startGame.id, {
+      started: true,
+      latitude: startGame.latitude,
+      longitude: startGame.longitude,
+      maxTimer: startGame.maxTimer,
+    });
   }
 
   @Mutation(() => GameSchema, { nullable: true })

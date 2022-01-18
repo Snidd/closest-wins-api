@@ -12,14 +12,6 @@ export default class GameStartedNotification {
   started: boolean;
 
   @Field({ nullable: true })
-  @Field()
-  latitude: number;
-
-  @Field({ nullable: true })
-  @Field()
-  longitude: number;
-
-  @Field({ nullable: true })
   maxTimer: number;
 
   @Field()

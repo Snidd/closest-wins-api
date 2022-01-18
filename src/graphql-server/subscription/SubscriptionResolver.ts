@@ -34,7 +34,13 @@ export class SubscriptionResolver {
   @Subscription(() => GameStartedNotification, {
     nullable: true,
     topics: TopicEnums.GAMESTARTED,
-    filter: ({ payload, args }) => {
+    filter: ({
+      payload,
+      args,
+    }: {
+      payload: { _doc: GameStartedNotification };
+      args: { gameId: Types.ObjectId };
+    }) => {
       const success = args.gameId.equals(payload._doc._id);
       console.log(success);
       return success;
@@ -44,8 +50,6 @@ export class SubscriptionResolver {
     @Root() payload: { _doc: GameStartedNotification },
     @Arg("gameId", () => ObjectIdScalar) gameId: Types.ObjectId
   ): Promise<GameStartedNotification | null> {
-    console.log("checking payload vs id");
-    console.log(JSON.stringify(payload));
     if (gameId.equals(payload._doc._id)) {
       return payload._doc;
     }
@@ -60,12 +64,9 @@ export class SubscriptionResolver {
       args,
     }: {
       payload: PlayerAddedNotification;
-      args: any;
+      args: { gameId: Types.ObjectId };
     }) => {
-      console.log(payload);
-      console.log(args);
       const success = args.gameId.equals(payload.gameId);
-      console.log(success);
       return success;
     },
   })
