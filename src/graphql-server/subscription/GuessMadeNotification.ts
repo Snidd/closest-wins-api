@@ -11,4 +11,10 @@ export default class GuessMadeNotification {
 
   @Field(() => ObjectIdScalar)
   gameId: Types.ObjectId;
+
+  @Field()
+  latitude: number;
+
+  @Field()
+  longitude: number;
 }

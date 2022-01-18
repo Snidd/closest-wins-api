@@ -19,6 +19,7 @@ import GameSchema from "@graphql/game/GameSchema";
 import { GameService } from "@db/game/GameService";
 import { Types } from "mongoose";
 import { ObjectIdScalar } from "@graphql/types/ObjectIdScalar";
+import MakeGuessResponse from "./MakeGuessResponse";
 @Resolver(GuessSchema)
 @Service()
 export class GuessResolver {
@@ -30,9 +31,9 @@ export class GuessResolver {
 
   @FieldResolver()
   async game(
-    @Root() guess: { _doc: GuessSchema }
+    @Root() guess: Omit<GuessSchema, "guesses">
   ): Promise<Omit<GameSchema, "guesses"> | null> {
-    return await this.gameService.getById(guess._doc.game._id);
+    return await this.gameService.getByGuessId(guess._id);
   }
 
   @Query(() => [GuessSchema], { nullable: "items" })
@@ -42,11 +43,11 @@ export class GuessResolver {
     return await this.guessService.getByGameId(id);
   }
 
-  @Mutation(() => GuessSchema)
+  @Mutation(() => MakeGuessResponse)
   async makeGuess(
     @Arg("data") newGuessData: MakeGuessInput,
     @PubSub() pubSub: PubSubEngine
-  ): Promise<Omit<GuessSchema, "game"> | null> {
+  ): Promise<MakeGuessResponse | null> {
     const game = await this.gameService.getById(newGuessData.gameId);
     if (game === null || game.started === false) {
       throw new Error(
@@ -60,12 +61,11 @@ export class GuessResolver {
     if (guess !== null) {
       throw new Error("This player already guessed!");
     }
-    console.log(JSON.stringify(guess));
-    const payload: GuessMadeNotification = {
-      gameId: newGuessData.gameId,
-      playerName: newGuessData.playerName,
-    };
+    const payload: GuessMadeNotification = newGuessData;
+
+    await this.guessService.createGuess(newGuessData.gameId, newGuessData);
+
     pubSub.publish(TopicEnums.GUESSMADE, payload);
-    return this.guessService.createGuess(newGuessData);
+    return { success: true };
   }
 }

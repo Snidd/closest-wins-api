@@ -1,4 +1,6 @@
-import { model, Schema, Model, Types } from "mongoose";
+import { Guess, guessSchema } from "@db/guess/GuessModel";
+import { Player, playerSchema } from "@db/player/PlayerModel";
+import { model, Schema, Types } from "mongoose";
 
 export interface Game {
   started: boolean;
@@ -9,9 +11,11 @@ export interface Game {
   updatedAt: Date;
   shorthand: string;
   adminKey: string;
+  players: Player[];
+  guesses: Types.Array<Guess>;
 }
 
-export interface GameDoc extends Omit<Game, "guesses"> {
+export interface GameDoc extends Game {
   _id: Types.ObjectId;
 }
 
@@ -43,10 +47,16 @@ export const schema = new Schema<Game>(
       type: String,
       required: true,
     },
+    players: {
+      type: [playerSchema],
+      required: false,
+    },
+    guesses: {
+      type: [guessSchema],
+      required: false,
+    },
   },
   { timestamps: true }
 );
 
 export const GameModel = model<Game>("Game", schema);
-
-export interface IGameModel extends Model<Game> {}

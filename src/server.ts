@@ -1,14 +1,8 @@
 import "reflect-metadata";
 import * as Express from "express";
-import Container from "typedi";
-import { GameModel } from "@db/game/GameModel";
 import { createServer } from "http";
-import { GuessModel } from "@db/guess/GuessModel";
 import { connect } from "@db/connect";
 import { createApolloServer } from "./graphql-server/createServer";
-
-Container.set({ id: "GAME", factory: () => GameModel });
-Container.set({ id: "GUESS", factory: () => GuessModel });
 
 async function startServer() {
   require("dotenv").config(__dirname + ".env");

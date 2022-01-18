@@ -8,10 +8,7 @@ describe("Test GuessResolver", () => {
 
   const MAKE_GUESS = `mutation MakeGuess($data: MakeGuessInput!) {
     makeGuess(data: $data) {
-      _id
-      playerName
-      longitude
-      latitude
+      success
     }
   }`;
 
@@ -110,11 +107,6 @@ describe("Test GuessResolver", () => {
     });
 
     expect(res.errors).toBe(undefined);
-    expect(res.data?.makeGuess).toHaveProperties([
-      "_id",
-      "playerName",
-      "longitude",
-      "latitude",
-    ]);
+    expect(res.data?.makeGuess).toHaveProperties(["success"]);
   });
 });

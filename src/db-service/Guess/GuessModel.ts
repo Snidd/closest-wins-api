@@ -1,19 +1,22 @@
-import { model, Schema, Types } from "mongoose";
+import { Schema, Types } from "mongoose";
 
 export interface Guess {
+  _id: Types.ObjectId;
   latitude: number;
   longitude: number;
   playerName: string;
-  game: Types.ObjectId;
   createdAt: Date;
   updatedAt: Date;
 }
 
-export interface GuessDoc extends Omit<Guess, "game"> {
+/*
+export interface GuessDoc extends Guess {
   _id: Types.ObjectId;
+  createdAt: Date;
+  updatedAt: Date;
 }
-
-const schema = new Schema<Guess>(
+*/
+export const guessSchema = new Schema<Guess>(
   {
     latitude: {
       type: Number,
@@ -27,12 +30,6 @@ const schema = new Schema<Guess>(
       type: String,
       required: true,
     },
-    game: {
-      type: Types.ObjectId,
-      ref: "Game",
-    },
   },
   { timestamps: true }
 );
-
-export const GuessModel = model<Guess>("Guess", schema);

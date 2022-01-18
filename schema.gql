@@ -65,6 +65,8 @@ type Guess {
 """Game started notification"""
 type GuessMadeNotification {
   gameId: ObjectId!
+  latitude: Float!
+  longitude: Float!
   playerName: String!
 }
 
@@ -76,9 +78,14 @@ input MakeGuessInput {
   playerName: String!
 }
 
+"""Response to making schema"""
+type MakeGuessResponse {
+  success: Boolean!
+}
+
 type Mutation {
   addGame(data: AddGameInput!): AddGameOutput!
-  makeGuess(data: MakeGuessInput!): Guess!
+  makeGuess(data: MakeGuessInput!): MakeGuessResponse!
   startGame(gameInput: StartGameInput!): Game
 }
 

@@ -1,29 +1,41 @@
 import { Model, Types } from "mongoose";
 import { Service, Inject } from "typedi";
-import { Guess, GuessDoc } from "./GuessModel";
-import { MakeGuessInput } from "@graphql/guess/MakeGuessInput";
+import { Guess } from "./GuessModel";
+import { Game, GameDoc } from "@db/game/GameModel";
 
 @Service()
 export class GuessService {
-  constructor(@Inject("GUESS") private readonly guess: Model<Guess>) {}
+  constructor(@Inject("GAME") private readonly gameService: Model<Game>) {}
 
-  async getById(id: Types.ObjectId): Promise<GuessDoc | null> {
-    return await this.guess.findOne({ _id: id });
-  }
-
-  async getByGameId(id: Types.ObjectId): Promise<GuessDoc[] | null> {
-    return await this.guess.find({ game: id });
+  async getByGameId(id: Types.ObjectId): Promise<Guess[] | null> {
+    const game = await this.gameService.findById(id);
+    if (game !== null) {
+      return game.guesses;
+    }
+    return null;
   }
 
   async getByGameIdAndPlayerName(
     id: Types.ObjectId,
     playerName: string
-  ): Promise<GuessDoc | null> {
-    return await this.guess.findOne({ game: id, playerName: playerName });
+  ): Promise<Guess | null> {
+    const game = await this.gameService.findById(id);
+    if (game !== null) {
+      const guess = game.guesses.find(
+        (guess) => guess.playerName === playerName
+      );
+      return guess !== undefined ? guess : null;
+    }
+    return null;
   }
 
-  async createGuess(input: MakeGuessInput): Promise<GuessDoc | null> {
-    const guess = new this.guess(input);
-    return await guess.save();
+  async createGuess(
+    gameId: Types.ObjectId,
+    newGuess: Partial<Guess>
+  ): Promise<GameDoc | null> {
+    const game = await this.gameService.findById(gameId);
+    if (game === null) return null;
+    game.guesses.push(newGuess);
+    return await game.save();
   }
 }

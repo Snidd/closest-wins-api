@@ -6,7 +6,6 @@ import { resolvers } from "@graphql/resolvers";
 import Container from "typedi";
 import { Server } from "http";
 import { GameModel } from "@db/game/GameModel";
-import { GuessModel } from "@db/guess/GuessModel";
 
 export const createSchema = async () => {
   const schema = await buildSchema({
@@ -22,7 +21,6 @@ export const createApolloServer = async (
   httpServer?: Server
 ): Promise<ApolloServer<ExpressContext>> => {
   Container.set({ id: "GAME", factory: () => GameModel });
-  Container.set({ id: "GUESS", factory: () => GuessModel });
 
   const schema = await createSchema();
 

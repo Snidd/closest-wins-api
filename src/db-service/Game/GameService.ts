@@ -11,6 +11,13 @@ export class GameService {
     return await this.game.find();
   }
 
+  async getByGuessId(guessId: Types.ObjectId): Promise<GameDoc | null> {
+    const game = await this.game
+      .findOne({ guesses: { $elemMatch: { _id: guessId } } })
+      .exec();
+    return game;
+  }
+
   async getById(id: Types.ObjectId): Promise<GameDoc | null> {
     return await this.game.findOne({ _id: id });
   }
