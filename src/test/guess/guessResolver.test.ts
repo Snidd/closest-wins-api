@@ -1,4 +1,5 @@
 import { createApolloServer } from "@graphql/createServer";
+import { StartGameInput } from "@graphql/game/StartGameInput";
 import { clearDatabase, closeDatabase, openDatabase } from "../environment/db";
 
 describe("Test GuessResolver", () => {
@@ -79,16 +80,19 @@ describe("Test GuessResolver", () => {
     const adminKey = gameRes.data?.addGame?.adminKey;
     console.log(`id: ${id}`);
 
+    const vars: Partial<StartGameInput> = {
+      gameId: id,
+      name: "Stockholm",
+      adminKey: adminKey,
+      latitude: 12.123123,
+      longitude: 13.1451452345,
+      maxTimer: null,
+    };
+
     const startGame = await server.executeOperation({
       query: START_GAME,
       variables: {
-        gameInput: {
-          id: id,
-          adminKey: adminKey,
-          latitude: 12.123123,
-          longitude: 13.1451452345,
-          maxTimer: null,
-        },
+        gameInput: vars,
       },
     });
 

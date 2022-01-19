@@ -22,6 +22,8 @@ import { StartGameInput } from "./StartGameInput";
 import { Types } from "mongoose";
 import { ObjectIdScalar } from "@graphql/types/ObjectIdScalar";
 import PlayerAddedNotification from "@graphql/subscription/PlayerAddedNotification";
+import { LocationService } from "@db/location/LocationService";
+import { StartGameExistingLocationInput } from "./StartGameExistingLocationInput";
 
 @Resolver(GameSchema)
 @Service()
@@ -31,6 +33,9 @@ export class GameResolver {
 
   @Inject()
   guessService: GuessService;
+
+  @Inject()
+  locationService: LocationService;
 
   @Query(() => String)
   sample(): String {
@@ -74,20 +79,53 @@ export class GameResolver {
 
   @Mutation(() => GameSchema, { nullable: true })
   async startGame(
-    @Arg("gameInput") startGame: StartGameInput,
+    @Arg("gameInput") startGameInput: StartGameInput,
     @PubSub() pubSub: PubSubEngine
   ): Promise<Omit<GameSchema, "guesses"> | null> {
-    const game = await this.gameService.getById(startGame.id);
-    if (game === null || game.adminKey !== startGame.adminKey) {
+    const game = await this.gameService.getById(startGameInput.gameId);
+    if (game === null || game.adminKey !== startGameInput.adminKey) {
       throw new Error("Invalid Game!");
     }
+
+    const location = await this.locationService.createLocation(
+      startGameInput.toLocation()
+    );
+    if (location === null) {
+      throw new Error("Invalid location.");
+    }
+
     const payload: GameStartedNotification = game;
     pubSub.publish(TopicEnums.GAMESTARTED, payload);
-    return this.gameService.updateById(startGame.id, {
+    return this.gameService.updateById(startGameInput.gameId, {
       started: true,
-      latitude: startGame.latitude,
-      longitude: startGame.longitude,
-      maxTimer: startGame.maxTimer,
+      location: location._id,
+      maxTimer: startGameInput.maxTimer ? startGameInput.maxTimer : 90,
+    });
+  }
+
+  @Mutation(() => GameSchema, { nullable: true })
+  async startGameWithExistingLocation(
+    @Arg("locationId") startGameInput: StartGameExistingLocationInput,
+    @PubSub() pubSub: PubSubEngine
+  ): Promise<Omit<GameSchema, "guesses"> | null> {
+    const game = await this.gameService.getById(startGameInput.id);
+    if (game === null || game.adminKey !== startGameInput.adminKey) {
+      throw new Error("Invalid Game!");
+    }
+
+    const location = await this.locationService.getById(
+      startGameInput.locationId
+    );
+    if (location === null) {
+      throw new Error("Invalid location.");
+    }
+
+    const payload: GameStartedNotification = game;
+    pubSub.publish(TopicEnums.GAMESTARTED, payload);
+    return this.gameService.updateById(startGameInput.id, {
+      started: true,
+      location: location._id,
+      maxTimer: startGameInput.maxTimer,
     });
   }
 

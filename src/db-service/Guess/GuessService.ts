@@ -33,9 +33,10 @@ export class GuessService {
     gameId: Types.ObjectId,
     newGuess: Partial<Guess>
   ): Promise<GameDoc | null> {
-    const game = await this.gameService.findById(gameId);
-    if (game === null) return null;
-    game.guesses.push(newGuess);
-    return await game.save();
+    const game = await this.gameService.findOneAndUpdate(
+      { _id: gameId },
+      { $push: { guesses: newGuess } }
+    );
+    return game;
   }
 }

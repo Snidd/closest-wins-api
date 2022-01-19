@@ -86,6 +86,7 @@ type Mutation {
   addPlayer(gameId: ObjectId!, playerName: String!, sessionId: String!): Game
   makeGuess(data: MakeGuessInput!): MakeGuessResponse!
   startGame(gameInput: StartGameInput!): Game
+  startGameWithExistingLocation(locationId: StartGameExistingLocationInput!): Game
 }
 
 """Mongo object id scalar type"""
@@ -105,13 +106,24 @@ type Query {
   sample: String!
 }
 
+"""Start Game with existing location data"""
+input StartGameExistingLocationInput {
+  adminKey: String!
+  id: ObjectId!
+  locationId: ObjectId!
+  maxTimer: Float
+}
+
 """Start Game data"""
 input StartGameInput {
   adminKey: String!
-  id: ObjectId!
+  description: String
+  gameId: ObjectId!
+  imageURL: String
   latitude: Float!
   longitude: Float!
   maxTimer: Float
+  name: String!
 }
 
 type Subscription {

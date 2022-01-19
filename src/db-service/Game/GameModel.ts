@@ -1,9 +1,11 @@
 import { Guess, guessSchema } from "@db/guess/GuessModel";
+import { locationSchema } from "@db/location/LocationModel";
 import { Player, playerSchema } from "@db/player/PlayerModel";
 import { model, Schema, Types } from "mongoose";
 
 export interface Game {
   started: boolean;
+  location: Types.ObjectId;
   latitude: number;
   longitude: number;
   maxTimer: number;
@@ -25,6 +27,10 @@ export const schema = new Schema<Game>(
       type: Boolean,
       required: false,
       default: false,
+    },
+    location: {
+      type: locationSchema,
+      required: false,
     },
     latitude: {
       type: Number,
