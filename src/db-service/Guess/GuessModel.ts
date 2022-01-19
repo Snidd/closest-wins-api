@@ -5,6 +5,7 @@ export interface Guess {
   latitude: number;
   longitude: number;
   playerName: string;
+  actualDistance: number;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -29,6 +30,11 @@ export const guessSchema = new Schema<Guess>(
     playerName: {
       type: String,
       required: true,
+    },
+    actualDistance: {
+      type: Number,
+      required: false,
+      default: -1,
     },
   },
   { timestamps: true }

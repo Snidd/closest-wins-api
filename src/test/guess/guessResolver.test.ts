@@ -1,5 +1,5 @@
 import { createApolloServer } from "@graphql/createServer";
-import { StartGameInput } from "@graphql/game/StartGameInput";
+import { StartGameInput } from "@graphql/game/types/StartGameInput";
 import { clearDatabase, closeDatabase, openDatabase } from "../environment/db";
 
 describe("Test GuessResolver", () => {
