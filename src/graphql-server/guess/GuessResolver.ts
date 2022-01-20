@@ -32,7 +32,7 @@ export class GuessResolver {
   @FieldResolver()
   async game(
     @Root() guess: Omit<GuessSchema, "guesses">
-  ): Promise<Omit<GameSchema, "guesses"> | null> {
+  ): Promise<Omit<GameSchema, "guesses" | "location"> | null> {
     return await this.gameService.getByGuessId(guess._id);
   }
 

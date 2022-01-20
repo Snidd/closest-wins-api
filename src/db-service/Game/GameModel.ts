@@ -1,5 +1,4 @@
 import { Guess, guessSchema } from "@db/guess/GuessModel";
-import { locationSchema } from "@db/location/LocationModel";
 import { Player, playerSchema } from "@db/player/PlayerModel";
 import { model, Schema, Types } from "mongoose";
 
@@ -29,7 +28,8 @@ export const schema = new Schema<Game>(
       default: false,
     },
     location: {
-      type: locationSchema,
+      type: Schema.Types.ObjectId,
+      ref: "Location",
       required: false,
     },
     latitude: {

@@ -1,15 +1,7 @@
 import { ObjectIdScalar } from "@graphql/types/ObjectIdScalar";
 import { TopicEnums } from "@graphql/types/TopicEnums";
 import { Types } from "mongoose";
-import {
-  Arg,
-  PubSub,
-  PubSubEngine,
-  Query,
-  Resolver,
-  Root,
-  Subscription,
-} from "type-graphql";
+import { Arg, Resolver, Root, Subscription } from "type-graphql";
 import { Service } from "typedi";
 import GameStartedNotification from "./GameStartedNotification";
 import GuessMadeNotification from "./GuessMadeNotification";
@@ -18,19 +10,6 @@ import PlayerAddedNotification from "./PlayerAddedNotification";
 @Resolver()
 @Service()
 export class SubscriptionResolver {
-  @Query(() => String)
-  async hello(@PubSub() pubSub: PubSubEngine) {
-    await pubSub.publish("MESSAGES", "Hello world");
-    return "Hello world!";
-  }
-
-  @Subscription(() => String, {
-    topics: "MESSAGES",
-  })
-  async subscription(@Root() payload: string): Promise<any> {
-    return "payload" + payload;
-  }
-
   @Subscription(() => GameStartedNotification, {
     nullable: true,
     topics: TopicEnums.GAMESTARTED,
@@ -81,11 +60,26 @@ export class SubscriptionResolver {
   }
 
   @Subscription(() => GuessMadeNotification, {
+    nullable: true,
     topics: TopicEnums.GUESSMADE,
+    filter: ({
+      payload,
+      args,
+    }: {
+      payload: GuessMadeNotification;
+      args: { gameId: Types.ObjectId };
+    }) => {
+      const success = args.gameId.equals(payload.gameId);
+      return success;
+    },
   })
   async guessMadeSubscription(
-    @Root() payload: GuessMadeNotification
-  ): Promise<GuessMadeNotification> {
-    return payload;
+    @Root() payload: GuessMadeNotification,
+    @Arg("gameId", () => ObjectIdScalar) gameId: Types.ObjectId
+  ): Promise<GuessMadeNotification | null> {
+    if (gameId.equals(payload.gameId)) {
+      return payload;
+    }
+    return null;
   }
 }

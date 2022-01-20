@@ -1,7 +1,9 @@
 import GuessSchema from "../guess/GuessSchema";
 import { Field, ObjectType, ID } from "type-graphql";
-import { OneToMany } from "typeorm";
+import { OneToMany, OneToOne } from "typeorm";
 import { Types } from "mongoose";
+import LocationSchema from "@graphql/location/LocationSchema";
+import { Location } from "@db/location/LocationModel";
 
 @ObjectType()
 export class BasicGameSchema {
@@ -10,14 +12,6 @@ export class BasicGameSchema {
 
   @Field()
   started: boolean;
-
-  @Field({ nullable: true })
-  @Field()
-  latitude: number;
-
-  @Field({ nullable: true })
-  @Field()
-  longitude: number;
 
   @Field({ nullable: true })
   maxTimer: number;
@@ -37,4 +31,8 @@ export default class GameSchema extends BasicGameSchema {
   @Field(() => [GuessSchema])
   @OneToMany(() => GuessSchema, (guess) => guess.game)
   guesses: GuessSchema[];
+
+  @Field(() => LocationSchema, { nullable: true })
+  @OneToOne(() => LocationSchema, (location) => location._id)
+  location: Location;
 }

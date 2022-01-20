@@ -21,6 +21,7 @@ import { Types } from "mongoose";
 import { ObjectIdScalar } from "@graphql/types/ObjectIdScalar";
 import PlayerAddedNotification from "@graphql/subscription/PlayerAddedNotification";
 import { LocationService } from "@db/location/LocationService";
+import { GameDoc } from "@db/game/GameModel";
 
 @Resolver(GameSchema)
 @Service()
@@ -40,14 +41,14 @@ export class GameResolver {
   }
 
   @Query(() => [GameSchema])
-  async games(): Promise<Omit<GameSchema, "guesses">[] | null> {
+  async games(): Promise<Omit<GameSchema, "guesses" | "location">[] | null> {
     return await this.gameService.getAll();
   }
 
   @Query(() => GameSchema, { nullable: true })
   async game(
     @Arg("id", () => ObjectIdScalar) id: Types.ObjectId
-  ): Promise<Omit<GameSchema, "guesses"> | null> {
+  ): Promise<Omit<GameSchema, "guesses" | "location"> | null> {
     const game = await this.gameService.getById(id);
     if (game === null) {
       throw new Error("No Game found");
@@ -56,8 +57,22 @@ export class GameResolver {
   }
 
   @FieldResolver()
-  async guesses(@Root() game: { _doc: GameSchema }) {
-    return await this.guessService.getByGameId(game._doc._id);
+  async guesses(@Root() game: GameDoc) {
+    if (game.started === true) {
+      return [];
+    }
+    return await game.guesses;
+  }
+
+  @FieldResolver()
+  async location(@Root() game: GameDoc) {
+    console.log(JSON.stringify(game.location));
+    if (game.started === true) {
+      return null;
+    }
+    const location = await this.locationService.getById(game.location);
+    console.log(JSON.stringify(location));
+    return location;
   }
 
   @Mutation(() => AddGameOutput)

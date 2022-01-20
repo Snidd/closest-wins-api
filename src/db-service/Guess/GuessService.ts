@@ -29,6 +29,17 @@ export class GuessService {
     return null;
   }
 
+  async updateAllGuesses(
+    gameId: Types.ObjectId,
+    guesses: Guess[]
+  ): Promise<GameDoc | null> {
+    const game = await this.gameService.findOneAndUpdate(
+      { _id: gameId },
+      { $set: { guesses: guesses } }
+    );
+    return game;
+  }
+
   async createGuess(
     gameId: Types.ObjectId,
     newGuess: Partial<Guess>

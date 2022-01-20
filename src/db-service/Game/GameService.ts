@@ -22,6 +22,31 @@ export class GameService {
     return await this.game.findOne({ _id: id });
   }
 
+  async updateStartedById(
+    id: Types.ObjectId,
+    started: boolean
+  ): Promise<GameDoc | null> {
+    return await this.game.findByIdAndUpdate(id, {
+      $set: { started: started },
+    });
+  }
+
+  async updateLocationByIds(
+    id: Types.ObjectId,
+    locationId: Types.ObjectId
+  ): Promise<GameDoc | null> {
+    return await this.game.findByIdAndUpdate(id, {
+      $set: { location: locationId },
+    });
+  }
+
+  async getByIdAndAdminKey(
+    id: Types.ObjectId,
+    adminKey: string
+  ): Promise<GameDoc | null> {
+    return await this.game.findOne({ _id: id, adminKey: adminKey });
+  }
+
   async getUniqueShorthand(): Promise<string> {
     let shorthand = generate({
       length: 5,

@@ -21,7 +21,7 @@ export class StartGameResolver {
   async startGame(
     @Arg("gameInput") startGameInput: StartGameInput,
     @PubSub() pubSub: PubSubEngine
-  ): Promise<Omit<GameSchema, "guesses"> | null> {
+  ): Promise<Omit<GameSchema, "guesses" | "location"> | null> {
     const game = await this.gameService.getById(startGameInput.gameId);
     if (game === null || game.adminKey !== startGameInput.adminKey) {
       throw new Error("Invalid Game!");
@@ -36,18 +36,31 @@ export class StartGameResolver {
 
     const payload: GameStartedNotification = game;
     pubSub.publish(TopicEnums.GAMESTARTED, payload);
-    return this.gameService.updateById(startGameInput.gameId, {
-      started: true,
-      location: location._id,
-      maxTimer: startGameInput.maxTimer ? startGameInput.maxTimer : 90,
-    });
+
+    //TODO: Figure out why wrong ID is stored.
+    //console.log("updating game with LocationId: " + location._id);
+
+    await this.gameService.updateLocationByIds(
+      startGameInput.gameId,
+      location._id
+    );
+    //console.log(`game locationId after update: ${gameAfterLocation?.location}`);
+    const updatedGame = await this.gameService.updateStartedById(
+      startGameInput.gameId,
+      true
+    );
+    /*console.log(
+      `game locationId after started update: ${updatedGame?.location}`
+    );*/
+
+    return updatedGame;
   }
 
   @Mutation(() => GameSchema, { nullable: true })
   async startGameWithExistingLocation(
     @Arg("locationId") startGameInput: StartGameExistingLocationInput,
     @PubSub() pubSub: PubSubEngine
-  ): Promise<Omit<GameSchema, "guesses"> | null> {
+  ): Promise<Omit<GameSchema, "guesses" | "location"> | null> {
     const game = await this.gameService.getById(startGameInput.id);
     if (game === null || game.adminKey !== startGameInput.adminKey) {
       throw new Error("Invalid Game!");
@@ -75,7 +88,7 @@ export class StartGameResolver {
   async startGame(
     @Arg("gameInput") startGameInput: StartGameInput,
     @PubSub() pubSub: PubSubEngine
-  ): Promise<Omit<GameSchema, "guesses"> | null> {
+  ): Promise<Omit<GameSchema, "guesses" | "location"> | null> {
     const game = await this.gameService.getById(startGameInput.gameId);
     if (game === null || game.adminKey !== startGameInput.adminKey) {
       throw new Error("Invalid Game!");
